@@ -19,20 +19,20 @@ class _MyAppState extends State<MyApp> {
 
   // Dynamic variable
   double _inputUser = 0;
-  double _kelvin = 0;
-  double _reamur = 0;
+  double _result = 0;
 
-  String _stringKelvin = '0.0';
-  String _stringReamur = '0.0';
+  String _newValue = "Kelvin";
+
+  var listItem = ["Kelvin", "Reamur"];
 
   void _temperatureConversion() {
     setState(() {
       _inputUser = double.parse(inputSuhuController.text);
-      _kelvin = _inputUser + 273;
-      _reamur = _inputUser * (4 / 5);
 
-      _stringKelvin = _kelvin.toStringAsFixed(1);
-      _stringReamur = _reamur.toStringAsFixed(1);
+      if (_newValue == "Kelvin")
+        _result = _inputUser + 273;
+      else
+        _result = (4 / 5) * _inputUser;
     });
   }
 
@@ -54,10 +54,40 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Input(inputSuhuController: inputSuhuController),
-              Result(stringKelvin: _stringKelvin, stringReamur: _stringReamur),
+              Container(
+                margin: EdgeInsets.only(top: 16),
+                width: 256,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  items: listItem.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  value: _newValue,
+                  onChanged: (String? changeValue) {
+                    setState(() {
+                      _newValue = changeValue!;
+                    });
+                  },
+                ),
+              ),
+              Result(
+                result: _result,
+              ),
               Convert(
                 convertHandler: _temperatureConversion,
               ),
+              Container(),
+              Expanded(
+                child: ListView(),
+              )
             ],
           ),
         ),
