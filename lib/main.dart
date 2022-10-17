@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:konversi_suhu/input.dart';
+import 'package:konversi_suhu/result.dart';
+import 'convert.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,66 +53,10 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextFormField(
-                controller: inputSuhuController,
-                decoration:
-                    InputDecoration(hintText: 'Masukkan Suhu Dalam Celcius'),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom: 16),
-                        child: Text(
-                          'Suhu dalam Kelvin',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '$_stringKelvin',
-                        style: TextStyle(fontSize: 48),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom: 16),
-                        child: Text(
-                          'Suhu dalam Reamor',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        '$_stringReamur',
-                        style: TextStyle(fontSize: 48),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 32),
-                child: ElevatedButton(
-                  onPressed: _temperatureConversion,
-                  child: Text(
-                    'Konversi Suhu',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                  ),
-                ),
+              Input(inputSuhuController: inputSuhuController),
+              Result(stringKelvin: _stringKelvin, stringReamur: _stringReamur),
+              Convert(
+                convertHandler: _temperatureConversion,
               ),
             ],
           ),
