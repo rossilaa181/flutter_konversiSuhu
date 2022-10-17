@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:konversi_suhu/input.dart';
 import 'package:konversi_suhu/result.dart';
 import 'convert.dart';
+import 'history.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,14 +26,25 @@ class _MyAppState extends State<MyApp> {
 
   var listItem = ["Kelvin", "Reamur"];
 
+  List<String> listViewItem = <String>[];
+
   void _temperatureConversion() {
     setState(() {
       _inputUser = double.parse(inputSuhuController.text);
 
-      if (_newValue == "Kelvin")
+      if (_newValue == "Kelvin") {
         _result = _inputUser + 273;
-      else
+        listViewItem.add("Kelvin: $_result");
+      } else {
         _result = (4 / 5) * _inputUser;
+        listViewItem.add("Reamur: $_result");
+      }
+    });
+  }
+
+  void dropdownOnChanged(String? changeValue) {
+    setState(() {
+      _newValue = changeValue!;
     });
   }
 
@@ -71,11 +83,7 @@ class _MyAppState extends State<MyApp> {
                     );
                   }).toList(),
                   value: _newValue,
-                  onChanged: (String? changeValue) {
-                    setState(() {
-                      _newValue = changeValue!;
-                    });
-                  },
+                  onChanged: dropdownOnChanged,
                 ),
               ),
               Result(
@@ -84,7 +92,16 @@ class _MyAppState extends State<MyApp> {
               Convert(
                 convertHandler: _temperatureConversion,
               ),
-              Container(),
+              Container(
+                margin: EdgeInsets.only(bottom: 16),
+                child: Text(
+                  "Riwayat Konversi",
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              Riwayat(listViewItem: listViewItem),
               Expanded(
                 child: ListView(),
               )
